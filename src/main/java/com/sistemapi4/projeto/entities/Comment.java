@@ -2,8 +2,6 @@ package com.sistemapi4.projeto.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,44 +9,37 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Post implements Serializable{
+public class Comment implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String text;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant moment;	
-	private String title;
-	private String body;
+	
 	
 	@ManyToOne
-	@JoinColumn(name = "author_id")
-	private User author;
+	@JoinColumn(name = "post_id")
+	private Post posts;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "posts")
-	private List<Comment> comments = new ArrayList<>();
-	
-	public Post() {
+	public Comment() {
 		
 		
 	}
 
-	public Post(Long id, Instant moment, String title, String body, User author) {
+	public Comment(Long id, Instant moment, String text, Post posts) {
 		super();
 		this.id = id;
 		this.moment = moment;
-		this.title = title;
-		this.body = body;
-		this.author = author;
+		this.text = text;
+		this.posts = posts;
 	}
 
 	public Long getId() {
@@ -66,30 +57,22 @@ public class Post implements Serializable{
 	public void setMoment(Instant moment) {
 		this.moment = moment;
 	}
-
-	public String getTitle() {
-		return title;
+	
+	public Post getPosts() {
+		return posts;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setPosts(Post posts) {
+		this.posts = posts;
 	}
 
-	public String getBody() {
-		return body;
+	public String getText() {
+		return text;
 	}
 
-	public void setBody(String body) {
-		this.body = body;
-	}
-
-	public User getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(User author) {
-		this.author = author;
-	}
+	public void setText(String text) {
+		this.text = text;
+	}	
 
 	@Override
 	public int hashCode() {
@@ -107,14 +90,16 @@ public class Post implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Post other = (Post) obj;
+		Comment other = (Comment) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}	
+	}
+
+
 	
 		
 	
