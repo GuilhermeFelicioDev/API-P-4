@@ -29,17 +29,22 @@ public class Comment implements Serializable{
 	@JoinColumn(name = "post_id")
 	private Post posts;
 	
+	@ManyToOne
+	@JoinColumn(name = "author_id")
+	private User author;
+	
 	public Comment() {
 		
 		
 	}
 
-	public Comment(Long id, Instant moment, String text, Post posts) {
+	public Comment(Long id, Instant moment, String text, Post posts, User author) {
 		super();
 		this.id = id;
 		this.moment = moment;
 		this.text = text;
 		this.posts = posts;
+		this.author = author;
 	}
 
 	public Long getId() {
@@ -73,6 +78,14 @@ public class Comment implements Serializable{
 	public void setText(String text) {
 		this.text = text;
 	}	
+
+	public User getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(User author) {
+		this.author = author;
+	}
 
 	@Override
 	public int hashCode() {
